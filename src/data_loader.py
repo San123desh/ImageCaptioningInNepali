@@ -1,31 +1,40 @@
 import os
+import pandas as pd
+from PIL import Image
+import torch
+from torchvision import transforms
+from tqdm import tqdm
+
 
 class DataLoader:
-    def __init__(self, image_dir, captions_file):
+    def __init__(self, image_dir, captions_file, image_size=(224,224)):
         self.image_dir = image_dir
         self.captions_file = captions_file
+        self.image_size = image_size
         # self.image_captions = self.load_captions()
 
-    def load_images(self):
-        image_files = os.listdir(self.image_dir)
-        return image_files
-    
-    
+        self.transform = transforms.Compose([
+            transforms.Resize(self.image_size),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        ])
 
+        self.captions = pd.read_csv(self.captions_file)
+
+    def load_images(self):
+        images = []
+        for img_file in tqdm(os.listdir(self.image_dir)):
+            try:
+                img_path = os.path.join(self.image_dir, img_file)
+                image = Image.open(img_path).convert("RGB")
+                image = self.transform(image)
+                images.append(image)
+            except Exception as e:
+                print(f"Error loading image {img_file}: {e}")
+        return torch.stack(images)
 
     def load_captions(self):
-        with open(self.captions_file, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
-            captions = {}
-            for line in lines:
-                image_id, caption = line.strip().split('\t')
-                if image_id not in captions:
-                    captions[image_id] = []
-                captions[image_id].append(caption)
-                # print(f'Image: {image_id}, Caption: {caption}')
-
-                # TODO: Preprocess captions (e.g., convert to lowercase, remove punctuation, etc.)
-                # captions[image_id] = preprocess_caption(caption)
-                return captions
+        captions = self.captions['caption'].tolist()
+        return captions
             
     
