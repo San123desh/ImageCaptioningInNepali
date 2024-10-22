@@ -1,40 +1,27 @@
 import os
 import pandas as pd
-from PIL import Image
-import torch
-from torchvision import transforms
-from tqdm import tqdm
-
+from indicnlp.tokenize import sentence_tokenize
+from googletrans import Translator
 
 class DataLoader:
-    def __init__(self, image_dir, captions_file, image_size=(224,224)):
+    def __init__(self, image_dir, captions_file, language='ne'):
         self.image_dir = image_dir
         self.captions_file = captions_file
-        self.image_size = image_size
-        # self.image_captions = self.load_captions()
-
-        self.transform = transforms.Compose([
-            transforms.Resize(self.image_size),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-        ])
-
+        self.language = language
+        self.translator = Translator()
         self.captions = pd.read_csv(self.captions_file)
+        self._prepare_data()
 
-    def load_images(self):
-        images = []
-        for img_file in tqdm(os.listdir(self.image_dir)):
-            try:
-                img_path = os.path.join(self.image_dir, img_file)
-                image = Image.open(img_path).convert("RGB")
-                image = self.transform(image)
-                images.append(image)
-            except Exception as e:
-                print(f"Error loading image {img_file}: {e}")
-        return torch.stack(images)
+    def _prepare_data(self):
+        # Tokenizing and translating captions to Nepali
+        translated_captions = []
+        for caption in self.captions['caption']:
+            tokenized_caption = sentence_tokenize(caption, lang='en')
+            translated_caption = self.translator.translate(tokenized_caption, src='en', dest=self.language).text
+            translated_captions.append(translated_caption)
 
-    def load_captions(self):
-        captions = self.captions['caption'].tolist()
-        return captions
-            
-    
+        self.captions['nepali_caption'] = translated_captions
+        print("Translation completed and added as 'nepali_caption' in captions.")
+
+    def get_data(self):
+        return self.captions
