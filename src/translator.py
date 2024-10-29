@@ -17,7 +17,27 @@ class NepaliTranslator:
         tokens = indic_tokenize.trivial_tokenize(text)
         return tokens
 
-    def translate_and_tokenize(self, text):
-        translated_text = self.translate_to_nepali(text)
-        tokenized_text = self.tokenize_nepali(translated_text)
-        return translated_text, tokenized_text
+    # def translate_and_tokenize(self, text):
+    #     translated_text = self.translate_to_nepali(text)
+    #     print(f"Translated text: %s" % translated_text)
+    #     if translated_text:
+    #         tokenized_text = self.tokenize_nepali(translated_text)
+    #         print(f"Tokenized text: {tokenized_text}")
+    #     else:
+    #         tokenized_text = []  # Empty list if translation fails
+    #         print("Translation failed. Using empty tokenized text.")
+    #     return translated_text, tokenized_text
+    def translate_and_tokenize(self, caption):
+        if not caption:
+            print("Translation failed. Using empty tokenized text.")
+            return "", []
+        
+        # Add actual translation logic here
+        translated_caption = self.translate_to_nepali(caption)
+        tokenized_caption = self.tokenize_nepali(translated_caption)
+        
+        if not translated_caption:
+            print("Translation failed. Skipping this image.")
+            return "", []
+
+        return translated_caption, tokenized_caption
