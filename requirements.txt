@@ -1,9 +1,9 @@
-pip install tqdm
-# pip install torch
-pip install chardet
-pip install googletrans==4.0.0-rc1 indic-nlp-library
-pip install matplotlib
-pip install deep-translator
+ tqdm
+chardet
+googletrans==4.0.0-rc1
+indic-nlp-library
+matplotlib
+deep-translator
 
 
 
