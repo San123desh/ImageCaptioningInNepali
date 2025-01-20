@@ -1,15 +1,22 @@
+<<<<<<< HEAD
 tensorflow==2.17.0
 keras==2.8.0
 tqdm
+=======
+ tqdm
+>>>>>>> f4e90dc02a80c25dd3c56c4867ef97612977356b
 chardet
 googletrans==4.0.0-rc1
 indic-nlp-library
 matplotlib
 deep-translator
+<<<<<<< HEAD
 Pillow
 h5py
 nltk
 scikit-learn
+=======
+>>>>>>> f4e90dc02a80c25dd3c56c4867ef97612977356b
 
 
 

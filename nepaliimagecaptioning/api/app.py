@@ -1,12 +1,19 @@
 import io
+<<<<<<< HEAD
 import sys
 import os
+=======
+>>>>>>> f4e90dc02a80c25dd3c56c4867ef97612977356b
 from datetime import datetime
 
 from PIL import Image
 from fastapi import FastAPI, File, UploadFile, HTTPException
 
+<<<<<<< HEAD
 from nepaliimagecaptioning.service.image_caption_generator import CaptionGenerator
+=======
+from nepaliimagecaptioning.service.image_caption_generator import ImageCaptionGenerator
+>>>>>>> f4e90dc02a80c25dd3c56c4867ef97612977356b
 
 # Initialize the FastAPI app
 app = FastAPI(
@@ -15,7 +22,11 @@ app = FastAPI(
     version="1.0.0",
 )
 
+<<<<<<< HEAD
 model = CaptionGenerator()
+=======
+model = ImageCaptionGenerator()
+>>>>>>> f4e90dc02a80c25dd3c56c4867ef97612977356b
 
 
 @app.post("/caption")

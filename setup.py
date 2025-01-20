@@ -7,8 +7,13 @@ if sys.version_info < (3, 6):
 from setuptools import setup, find_packages
 
 setup(
+<<<<<<< HEAD
     name='nepaliimagecaptioning',
     description="Image Captioning in Nepali Language",
+=======
+    name='src',
+    description="B",
+>>>>>>> f4e90dc02a80c25dd3c56c4867ef97612977356b
     url='xxx',
     project_urls={
         'Documentation': 'xx',
