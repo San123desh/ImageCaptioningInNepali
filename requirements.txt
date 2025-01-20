@@ -1,0 +1,17 @@
+tensorflow==2.17.0
+keras==2.8.0
+tqdm
+chardet
+googletrans==4.0.0-rc1
+indic-nlp-library
+matplotlib
+deep-translator
+Pillow
+h5py
+nltk
+scikit-learn
+
+
+
+
+
