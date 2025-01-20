@@ -150,11 +150,10 @@ assets/charting_library
 .Ds_Store
 *.csv
 models
-<<<<<<< HEAD
 
 # Data folder
 data/
 Flickr8k_Dataset/
 
-=======
->>>>>>> f4e90dc02a80c25dd3c56c4867ef97612977356b
+checkpoints
+logs
