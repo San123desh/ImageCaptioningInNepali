@@ -8,32 +8,17 @@ from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
 class FeatureExtractor:
     def __init__(self):
-        """
-        Initializes the FeatureExtractor with a pre-trained VGG16 model.
-        """
+        
         self.model = self.load_vgg16()
 
     def load_vgg16(self):
-        """
-        Loads the pre-trained VGG16 model, modifying it to output features from the second-to-last layer.
         
-        Returns:
-            model (Model): Modified VGG16 model.
-        """
         model = VGG16()
         model = Model(inputs=model.inputs, outputs=model.layers[-2].output)
         return model
 
     def extract_features(self, directory):
-        """
-        Extracts features for images in the specified directory using the VGG16 model.
-        
-        Args:
-            directory (str): Path to the directory containing images.
-        
-        Returns:
-            features (dict): A dictionary where keys are image IDs and values are extracted features.
-        """
+       
         features = {}
         if not os.path.exists(directory):
             print(f"The directory {directory} does not exist. Please check the path.")

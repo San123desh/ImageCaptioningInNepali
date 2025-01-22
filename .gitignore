@@ -151,6 +151,9 @@ assets/charting_library
 *.csv
 models
 
+#Working directory  
+working/
+
 # Data folder
 data/
 Flickr8k_Dataset/

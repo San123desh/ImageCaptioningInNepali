@@ -161,7 +161,7 @@ class ImageCaptioningPipeline:
 
 
 if __name__ == "__main__":
-    BASE_DIR = 'data/Flickr8k_Dataset'
+    BASE_DIR = 'data/nepali_image_caption_dataset'
     WORKING_DIR = 'working'
 
     pipeline = ImageCaptioningPipeline(BASE_DIR, WORKING_DIR)

@@ -29,5 +29,7 @@ def train_model(model, train, mapping, features, tokenizer, max_length, vocab_si
         generator = data_generator(train, mapping, features, tokenizer, max_length, vocab_size, batch_size)
         model.fit(generator, epochs=1, steps_per_epoch=steps, verbose=1)
 
+
+
 def save_model(model, path):
     model.save(path)
