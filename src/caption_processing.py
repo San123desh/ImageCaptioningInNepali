@@ -58,35 +58,25 @@ def get_max_length(captions):
     print(f"Maximum caption length: {max_len}")
     return max_len
 
-# Example usage:
-if __name__ == "__main__":
-    # Load your captions document (adjust the path as needed)
-    with open("path/to/captions.txt", "r", encoding="utf-8") as f:
-        captions_doc = f.read()
+# # Example usage:
+# if __name__ == "__main__":
+#     # Load your captions document (adjust the path as needed)
+#     with open("path/to/captions.txt", "r", encoding="utf-8") as f:
+#         captions_doc = f.read()
 
-    # Step 1: Create the mapping
-    mapping = create_mapping(captions_doc)
+#     # Step 1: Create the mapping
+#     mapping = create_mapping(captions_doc)
 
-    # Step 2: Clean the mapping
-    clean_mapping(mapping)
+#     # Step 2: Clean the mapping
+#     clean_mapping(mapping)
 
-    # Step 3: Prepare captions for tokenizer
-    all_captions = [caption for captions in mapping.values() for caption in captions]
+#     # Step 3: Prepare captions for tokenizer
+#     all_captions = [caption for captions in mapping.values() for caption in captions]
 
-    # Step 4: Create the tokenizer
-    tokenizer = create_tokenizer(all_captions, min_freq=5)  # Adjust min_freq as needed
+#     # Step 4: Create the tokenizer
+#     tokenizer = create_tokenizer(all_captions, min_freq=5)  # Adjust min_freq as needed
 
-    # Step 5: Get maximum caption length
-    max_length = get_max_length(all_captions)
+#     # Step 5: Get maximum caption length
+#     max_length = get_max_length(all_captions)
 
-    # Debugging outputs
-    print("\nSample cleaned captions:")
-    for image_id, captions in list(mapping.items())[:5]:
-        print(f"{image_id}: {captions}")
-
-    print("\nTokenized example:")
-    sample_caption = "startseq कालो कुकुर पानीको छेउमा हिंडिरहेको छ। endseq"
-    print(f"Tokenized: {tokenizer.texts_to_sequences([sample_caption])}")
-
-    print("\nSample vocabulary:")
-    print(list(tokenizer.word_index.items())[:10])
+  

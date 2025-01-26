@@ -33,3 +33,5 @@
 #                   optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
 #                   metrics=['accuracy'])
 #     return model
+# import tensorflow as tf
+# print(tf.__version__)

@@ -1,4 +1,3 @@
-
 import datetime
 import os
 from keras.callbacks import ModelCheckpoint, TensorBoard
@@ -7,7 +6,6 @@ from caption_processing import create_mapping, clean_mapping, create_tokenizer, 
 from data_preparation import load_captions, save_features, load_features
 # from feature_extraction import load_vgg16, extract_features
 from feature_extraction import load_inceptionv3, extract_features
-
 from evaluation import evaluate_model, generate_caption
 import numpy as np
 import tensorflow as tf 
@@ -30,11 +28,9 @@ tokenizer = create_tokenizer(all_captions, min_freq=1)
 vocab_size = len(tokenizer.word_index) + 1
 max_length = get_max_length(all_captions)
 
-
 # Validate special tokens
 assert "startseq" in tokenizer.word_index, "Error: 'startseq' missing in tokenizer."
 assert "endseq" in tokenizer.word_index, "Error: 'endseq' missing in tokenizer."
-
 
 # Debugging Tokenizer
 print("Tokenizer Vocabulary Size:", len(tokenizer.word_index))
@@ -42,14 +38,9 @@ print("Sample Tokenizer Mapping (First 10):", {k: tokenizer.word_index[k] for k 
 
 # Split Dataset
 image_ids = list(mapping.keys())
-split = int(len(image_ids) * 0.80)
+split = int(len(image_ids) * 0.70)
 train = image_ids[:split]
 test = image_ids[split:]
-# # Extract Features
-# model_vgg = load_vgg16()
-# directory = os.path.join(BASE_DIR, 'Images')
-# features = extract_features(model_vgg, directory)
-# save_features(features, os.path.join(WORKING_DIR, 'features.pkl'))
 
 from feature_extraction import load_inceptionv3, extract_features
 
@@ -76,8 +67,6 @@ from tensorflow.keras.layers import Input, Dense, Dropout, LSTM, Embedding, add,
 from tensorflow.keras.models import Model
 import tensorflow as tf
 
-
-
 def define_model(vocab_size, max_length):
     # Encoder model (Image features)
     inputs1 = Input(shape=(2048,), name="image")
@@ -91,9 +80,7 @@ def define_model(vocab_size, max_length):
     se2 = Dropout(0.5)(se1)
     se3 = LSTM(512)(se2)
     se3 = BatchNormalization()(se3)
-   
 
-   
     # Decoder model
     decoder1 = add([fe2,se3])
     # decoder1 = add([fe2, context_vector])  # Combine the image feature vector and context vector
@@ -161,7 +148,7 @@ model_checkpoint_callback = ModelCheckpoint(
     save_best_only=True,  # Save only the best model
     monitor='loss',  # Monitor training loss
     mode='min',  # Save when loss is minimized
-    verbose=1  # Print saving status
+    verbose=1,  # Print saving status
 )
 
 
@@ -176,6 +163,11 @@ model.fit(
     callbacks=[model_checkpoint_callback, tensorboard_callback, lr_scheduler]
 )
 
+def save_model(model, path):
+    model.save(path)
+
+save_model(model, os.path.join(WORKING_DIR, 'model.h5'))
+
 # Evaluate and Generate Captions
 features = load_features(os.path.join(WORKING_DIR, 'features.pkl'))
 # bleu1, bleu2 = evaluate_model(model, test, mapping, features, tokenizer, max_length)
@@ -184,10 +176,7 @@ bleu_scores = evaluate_model(model, test, mapping, features, tokenizer, max_leng
 print("BLEU-Scores:", bleu_scores)
 
 # Generate Captions for Sample Images
-sample_images = ["10815824_2997e03d76.jpg", "3758175529_81941e7cc9.jpg"]
+sample_images = ["10815824_2997e03d76.jpg","23445819_3a458716c1.jpg","3703960010_1e4c922a25.jpg","36422830_55c844bc2d.jpg"]
 for image_name in sample_images:
     generate_caption(image_name, model, mapping, features, tokenizer, max_length, BASE_DIR)
     print("\n")
-
-# generate_caption("1001773457_577c3a7d70.jpg", model, mapping, features, tokenizer, max_length, BASE_DIR)
-generate_caption("3758175529_81941e7cc9.jpg", model, mapping, features, tokenizer, max_length, BASE_DIR)
