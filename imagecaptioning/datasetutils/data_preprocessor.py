@@ -1,12 +1,12 @@
 
 
 import pandas as pd
-from tensorflow.keras.preprocessing.text import Tokenizer
+
 from nltk.tokenize import word_tokenize
 import re
 
 class ImageCaptioningDataPreprocessor:
-    def __init__(self, image_path, captions_file):
+    def __init__(self, image_path, captions_file, tokenizer):
         self.image_path = image_path
         self.data = self.load_and_process_captions(captions_file)
         
@@ -14,7 +14,7 @@ class ImageCaptioningDataPreprocessor:
         # print("Columns in DataFrame:", self.data.columns)
         # print("First few rows of DataFrame:\n", self.data.head())
 
-        self.tokenizer = Tokenizer()
+        self.tokenizer = tokenizer
         self.vocab_size = 0
         self.max_length = 0
 
