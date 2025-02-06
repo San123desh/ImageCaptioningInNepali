@@ -60,6 +60,7 @@ class Trainer:
         self.max_length = max_length
         self.vocab_size = vocab_size
 
+
     def data_generator(self, data_keys, mapping, features, batch_size):
         X1, X2, y = [], [], []
         n = 0
@@ -72,22 +73,28 @@ class Trainer:
                         in_seq, out_seq = seq[:i], seq[i]
                         in_seq = pad_sequences([in_seq], maxlen=self.max_length)[0]
                         out_seq = to_categorical([out_seq], num_classes=self.vocab_size)
-                        # out_seq = np.expand_dims(out_seq, axis=0)
 
-                        X1.append(features[key][0])
+                        # Ensure the image feature has the correct shape (2048,)
+                        if key not in features or features[key].shape != (2048,):
+                            print(f"Warning: Invalid feature for image {key}. Skipping.")
+                            continue
+
+                        X1.append(features[key])
                         X2.append(in_seq)
                         y.append(out_seq)
                         n += 1
-                        
+
                         if n == batch_size:
                             X1, X2, y = np.array(X1), np.array(X2), np.array(y)
-                            X1 = tf.cast(X1, tf.float32)
-                            X2 = tf.cast(X2, tf.int32)
+                            X1 = tf.cast(X1, tf.float32)  # Shape: (batch_size, 2048)
+                            X2 = tf.cast(X2, tf.int32)    # Shape: (batch_size, max_length)
                             y = np.array(y).reshape((batch_size, self.vocab_size))
-                            y = tf.cast(y, tf.float32)
+                            y = tf.cast(y, tf.float32)    # Shape: (batch_size, vocab_size)
                             yield {"image": X1, "text": X2}, y
                             X1, X2, y = [], [], []
                             n = 0
+
+            # Handle incomplete batches
             if n > 0:
                 X1, X2, y = np.array(X1), np.array(X2), np.array(y)
                 X1 = tf.cast(X1, tf.float32)
@@ -98,6 +105,44 @@ class Trainer:
                 X1, X2, y = [], [], []
                 n = 0
 
+    # def data_generator(self, data_keys, mapping, features, batch_size):
+    #     X1, X2, y = [], [], []
+    #     n = 0
+    #     while True:
+    #         for key in data_keys:
+    #             captions = mapping.get(key, [])
+    #             for caption in captions:
+    #                 seq = self.tokenizer.texts_to_sequences([caption])[0]
+    #                 for i in range(1, len(seq)):
+    #                     in_seq, out_seq = seq[:i], seq[i]
+    #                     in_seq = pad_sequences([in_seq], maxlen=self.max_length)[0]
+    #                     out_seq = to_categorical([out_seq], num_classes=self.vocab_size)
+    #                     # out_seq = np.expand_dims(out_seq, axis=0)
+
+    #                     X1.append(features[key][0])
+    #                     X2.append(in_seq)
+    #                     y.append(out_seq)
+    #                     n += 1
+                        
+    #                     if n == batch_size:
+    #                         X1, X2, y = np.array(X1), np.array(X2), np.array(y)
+    #                         X1 = tf.cast(X1, tf.float32)
+    #                         X2 = tf.cast(X2, tf.int32)
+    #                         y = np.array(y).reshape((batch_size, self.vocab_size))
+    #                         y = tf.cast(y, tf.float32)
+    #                         yield {"image": X1, "text": X2}, y
+    #                         X1, X2, y = [], [], []
+    #                         n = 0
+    #         if n > 0:
+    #             X1, X2, y = np.array(X1), np.array(X2), np.array(y)
+    #             X1 = tf.cast(X1, tf.float32)
+    #             X2 = tf.cast(X2, tf.int32)
+    #             y = np.array(y).reshape((n, self.vocab_size))
+    #             y = tf.cast(y, tf.float32)
+    #             yield {"image": X1, "text": X2}, y
+    #             X1, X2, y = [], [], []
+    #             n = 0
+
     def train(self, train_keys, mapping, features, batch_size, epochs, steps_per_epoch):
         for epoch in range(epochs):
             print(f"Epoch {epoch + 1}/{epochs}")
@@ -105,6 +150,17 @@ class Trainer:
             self.model.fit(generator, epochs=1, steps_per_epoch=steps_per_epoch, verbose=1)
 
     @staticmethod
+    # def save_model(model, path):
+    #     model.save(path)
+    #     print(f"Model saved to {path}")
     def save_model(model, path):
+        """
+        Saves the trained model to the specified path in Keras format.
+        """
+        if not path.endswith(".keras"):
+            path = path.replace(".h5", ".keras")  # Replace .h5 with .keras
         model.save(path)
         print(f"Model saved to {path}")
+
+
+

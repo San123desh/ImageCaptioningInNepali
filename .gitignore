@@ -160,3 +160,7 @@ Flickr8k_Dataset/
 
 checkpoints
 logs
+
+indic_nlp_resources/
+
+examples/
