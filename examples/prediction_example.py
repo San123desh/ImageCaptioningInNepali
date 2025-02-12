@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from imagecaptioning.service.caption_generator import CaptionGenerator
+from imagecaptioning_onwork.service.caption_generator import CaptionGenerator
 
 if __name__ == '__main__':
     # Generate captions for a sample image
