@@ -1,0 +1,67 @@
+
+body{
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  padding: 20px;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 30vh;
+}
+
+.custom-file-input {
+  display: none;
+ 
+}
+
+.custom-file-label{
+  display: inline-block;
+  padding: 10px 30px;
+  background-color: #111010f2;
+  color: #ffffff;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  font-family: monospace;
+  font-size: large;
+  font-weight: 600;
+}
+.custom-file-label:hover {
+  background-color: #004d00; 
+}
+
+h1 {
+  font-size: 34px;
+  margin-bottom: 20px;
+}
+.img-preview {
+  margin-top: 20px;
+}
+img {
+  max-width: 100%;
+  height: auto;
+  /* margin-top: 20px; */
+}
+
+.loading-spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  margin-top: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
