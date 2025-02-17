@@ -1,0 +1,14 @@
+
+fastapi==0.115.8
+keras==2.10.0
+matplotlib==3.9.2
+nltk==3.9.1
+pandas==2.2.3
+pydantic==2.10.6
+python-multipart==0.0.20
+tensorflow==2.10.0
+torch==2.5.1
+torchaudio==2.5.1
+torchvision==0.20.1
+tqdm==4.67.1
+uvicorn==0.34.0
